@@ -43,7 +43,8 @@ export default function Home() {
     }
 
     navigator.serviceWorker.ready.then(async function (registration) {
-      const pushServerPublicKey =
+      if (Notification.permission === "granted") {
+        const pushServerPublicKey =
         "BG74cAxa1vl8aCucpnLPff6_0UEJU5gGX4Oy-b_6i2wZusGPbVGCxxPSnu7iWvHQMs8zaV58FcG4M0qSY7ZwSJQ";
 
       const subscription = await registration.pushManager.subscribe({
@@ -68,6 +69,8 @@ export default function Home() {
 
       // здесь я передаю на бэкенд юзера и его pushSubscription
       console.log(subscription);
+      }
+      
     });
   }, []);
 
@@ -80,6 +83,12 @@ export default function Home() {
         padding: 50,
       }}
     >
+      <div onClick={async () => {
+         const permission = await Notification.requestPermission();
+         console.log(permission)
+      }}>
+        ПОЛУЧИТЬ РАЗРЕШЕНИЕ
+      </div>
       <p>p256h: {p256h}</p>
       <p>auth: {auth}</p>
       <p>endpoint: {endpoint}</p>
