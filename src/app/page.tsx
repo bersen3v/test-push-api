@@ -10,6 +10,16 @@ export default function Home() {
   const [p256h, setP256h] = useState("");
   const [auth, setAuth] = useState("");
 
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(`ENDPOINT: ${endpoint}, P256H: ${p256h}, AUTH: ${auth}`);
+      alert('Текст скопирован в буфер обмена!');
+    } catch (error) {
+      console.error('Не удалось скопировать текст: ', error);
+    }
+  };
+
+
   const permissiomRequest = async () => {
     if (Notification.permission !== "denied") {
       const permission = await Notification.requestPermission();
@@ -89,6 +99,13 @@ export default function Home() {
       }}>
         ПОЛУЧИТЬ РАЗРЕШЕНИЕ
       </div>
+
+      <div onClick={async () => {
+         copyToClipboard()
+      }}>
+        СКОПИРОВАТЬ В БУФЕР
+      </div>
+      
       <p>p256h: {p256h}</p>
       <p>auth: {auth}</p>
       <p>endpoint: {endpoint}</p>
